@@ -30,7 +30,7 @@ To set up the project, follow these steps:
    cd .. && yarn start
 ```
 
-## Structure :vertical_traffic_light:
+## Structure
 
 ```
 react-native-app-template/
