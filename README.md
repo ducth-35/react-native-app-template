@@ -17,7 +17,7 @@ This markdown provides a basic structure for this template.
 To set up the project, follow these steps:
 
 1. **Clone this repo**
-   `git clone https://github.com/duoqbao/react-native-app-template.git`
+   `https://github.com/ducth-35/react-native-app-template.git`
 2. **Run source**
 
 ```
@@ -82,5 +82,3 @@ react-native-app-template/
 ├── App.js
 └── ...
 ```
-
-:headphones: Happy coding !
