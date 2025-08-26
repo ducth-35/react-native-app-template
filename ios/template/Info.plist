@@ -32,7 +32,17 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
+	<key>RCTNewArchEnabled</key>
+	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SVN-GilroyBold.ttf</string>
+		<string>SVN-GilroyMedium.ttf</string>
+		<string>SVN-GilroyRegular.ttf</string>
+		<string>SVN-GilroySemiBold.ttf</string>
+		<string>Ionicons.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -47,13 +57,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>SVN-GilroyBold.ttf</string>
-		<string>SVN-GilroyMedium.ttf</string>
-		<string>SVN-GilroyRegular.ttf</string>
-		<string>SVN-GilroySemiBold.ttf</string>
-		<string>Ionicons.ttf</string>
-	</array>
 </dict>
 </plist>
