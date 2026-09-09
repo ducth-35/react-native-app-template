@@ -8,6 +8,16 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
+# Custom Xcode configurations for Dev/Prod: tell CocoaPods which ones are
+# debug-like vs release-like, otherwise it treats anything not literally
+# named "Debug"/"Release" as release (wrong prebuilt React Native Core gets
+# linked, breaking the Metro/dev-menu connection in Debug-Dev builds).
+project 'template',
+  'Debug' => :debug,
+  'Debug-Dev' => :debug,
+  'Release' => :release,
+  'Release-Dev' => :release
+
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -25,7 +35,6 @@ target 'template' do
   )
 
   post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
       installer,
       config[:reactNativePath],
