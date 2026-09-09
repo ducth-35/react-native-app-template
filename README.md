@@ -8,9 +8,10 @@ This markdown provides a basic structure for this template.
 
 - React Native
 - React Navigation
-- React Query
-- Zustand
+- React Query (TanStack Query)
+- Zustand (persisted with MMKV)
 - Axios
+- react-native-config (multi-env: `.env` / `.env.prod`)
 
 ## Setup & Run
 
@@ -27,8 +28,19 @@ To set up the project, follow these steps:
 
    cd ios && pod install
 
-   cd .. && yarn start
+   cd .. && yarn start:dev
 ```
+
+### Environments
+
+The app reads its config (`API_URL`, `APP_ENV`) from `react-native-config`, sourced from `.env` (dev) or `.env.prod` (prod). Because these values are baked into the native build, changing a `.env` file requires a native rebuild, not just a JS reload.
+
+| Purpose        | Command              |
+| -------------- | -------------------- |
+| Start Metro    | `yarn start:dev` / `yarn start:prod` |
+| Run Android    | `yarn android:dev` / `yarn android:prod` |
+| Run iOS        | `yarn ios:dev` / `yarn ios:prod` |
+| Android release| `yarn androidRelease:dev` / `yarn androidRelease:prod` |
 
 ## Structure
 
@@ -36,26 +48,37 @@ To set up the project, follow these steps:
 react-native-app-template/
 │
 ├── src/
-│ ├── apis/
-│ │ └── index.ts (include config instance & endpoints)
-│ │ └── todo.api.ts
-| |
+│ ├── features/
+│ │ └── todos/
+│ │   └── api.ts (axios calls for this resource)
+│ │   └── hooks.ts (useQuery/useMutation hooks, built on ./api)
+│ │   └── types.ts
+│ │ └── user/
+│ │   └── api.ts
+│ │   └── hooks.ts
+│ │   └── types.ts
+│ │ └── <your-resource>/ (add one folder per domain/resource, same 3 files)
+│ |
+│ ├── lib/
+│ │ └── api/
+│ │   └── client.ts (shared axios instance, baseURL from Config.API_URL, interceptors)
+│ │   └── queryClient.ts (QueryClient: default retry/staleTime/gcTime, global onError)
+│ │   └── types.ts (ApiError)
+│ │
 │ ├── assets/
 │ │ └── fonts
 │ │ └── icons
 │ │ └── images
 │ │
 │ ├── components/
-│ │ └── index.ts
+│ │ └── EnvBadge.tsx
 │ │ └── .... (some component here)
 │ │
 │ ├── configs/
 │ │ └── ... (add configure here)
 │ │
 │ ├── hooks/
-│ │ └── todos
-│ │   └── ....(hooks implement by react-query)
-│ │ └──useCustomHooks.ts (implement custom hooks)
+│ │ └── index.ts (app-wide custom hooks, not tied to a feature/resource)
 │ │
 │ ├── navigators/
 │ │ └── index.tsx (root navigators, where u can authorize, custom routes,...)
@@ -68,17 +91,21 @@ react-native-app-template/
 │ | └── ...etc/
 | |
 │ └── store/
-│ | └── useStore.ts
+│ | └── storage.ts (MMKV-backed storage adapter for zustand persist)
+│ | └── useSampleStore.ts
 │ | └── useAnotherStore.ts
 | |
 │ └── types/
-│ | └── global.ts
+│ | └── env.d.ts
 │ | └── ....etc.ts
 │ |
 │ └── utils/
-│ | └── intex.ts
+│ | └── index.ts
 │ | └── ....etc.ts
 | |
-├── App.js
+├── App.tsx
+├── .env / .env.prod
 └── ...
 ```
+
+Each domain/resource gets its own folder under `src/features/<resource>/` with `api.ts` (axios calls), `hooks.ts` (react-query hooks — one per query/mutation), and `types.ts`. Screens only ever import from `hooks.ts`, never call `api.ts` or axios directly.
